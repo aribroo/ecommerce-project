@@ -1,0 +1,5 @@
+node_modules
+uploads
+rest.http
+.env
+package-lock.json
