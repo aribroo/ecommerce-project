@@ -88,4 +88,15 @@ const checkout = async (req, res, next) => {
   }
 };
 
-export { getProductHomepage, productDetails, searchProducts, addToCart, getCart, updateCart, deleteCart, checkout };
+const getImage = async (req, res, next) => {
+  try {
+    const name = req.params.imageName;
+    const result = await frontendService.getImage(name);
+
+    res.status(200).sendFile(result);
+  } catch (e) {
+    next(e);
+  }
+};
+
+export { getProductHomepage, productDetails, searchProducts, addToCart, getCart, updateCart, deleteCart, checkout, getImage };

@@ -5,6 +5,12 @@ import db from '../models/bundle-model.js';
 import { v4 as uuidv4 } from 'uuid';
 import { customerValidation } from '../validation/customer-schema.js';
 
+import { dirname, join } from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
 const getProductHomepage = async () => {
   return db.product.findAll({
     attributes: ['id', 'title', 'price', 'image', 'url'],
@@ -178,4 +184,11 @@ const checkout = async (query, request) => {
   return transactionData;
 };
 
-export default { getProductHomepage, productDetail, searchProducts, addToCart, getCart, updateCart, deleteCart, checkout };
+const getImage = async (name) => {
+  name = validate(getProductValidation, name);
+
+  const image = join(__dirname, '../../uploads', name);
+  return image;
+};
+
+export default { getProductHomepage, productDetail, searchProducts, addToCart, getCart, updateCart, deleteCart, checkout, getImage };
