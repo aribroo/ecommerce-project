@@ -1,0 +1,159 @@
+.cart-page {
+  padding: 50px 0;
+  min-height: 500px;
+  cursor: default;
+
+  .wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+}
+
+h1 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+  background-color: #fff;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+}
+
+th,
+td {
+  color: #333;
+  font-weight: 600;
+  padding: 15px;
+  text-align: left;
+}
+
+th {
+  background-color: #f9f9f9;
+}
+
+.product-item {
+  display: flex;
+  align-items: center;
+}
+
+.product-item img {
+  width: 100px;
+  object-fit: cover;
+  margin-right: 10px;
+}
+
+.product-price {
+  color: #333;
+  font-weight: 600;
+}
+
+.product-total-price {
+  color: #333;
+  font-weight: 600;
+}
+
+.quantity-input {
+  width: 40px;
+  padding: 5px;
+  text-align: center;
+}
+
+.delete-product {
+  background-color: #e6240f;
+  color: #fff;
+  font-weight: 500;
+  border: none;
+  padding: 8px 15px;
+  font-size: 14px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.delete-product:hover {
+  background-color: #d8210c;
+}
+
+.checkout-container {
+  margin-left: 750px;
+  margin-top: 20px;
+  display: flex;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  width: 400px;
+  align-items: center;
+  justify-content: space-evenly; /* Tambahkan untuk memberikan jarak di sekitar tombol */
+  flex-direction: row; /* Mengubah arah flex menjadi horizontal */
+  padding: 15px; /* Menambahkan ruang padding */
+  border-radius: 8px;
+  background-color: #ffffff; /* Latar belakang putih */
+}
+
+.total-price {
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+}
+
+.checkout-container .checkout-button {
+  background-color: #f4511e;
+  color: rgb(255, 255, 255);
+  font-weight: 500;
+  border: none;
+  padding: 10px 20px;
+  text-decoration: none;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.checkout-container .checkout-button:hover {
+  background-color: #ec4613; /* Ubah warna latar belakang saat dihover */
+  text-shadow: none; /* Hapus bayangan teks saat dihover */
+}
+
+/* css empty cart */
+.empty-cart-page {
+  font-family: 'Poppins', sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - 100px); /* Adjust as needed */
+  background-color: #f7f7f7;
+}
+
+.empty-cart-page .wrapper {
+  text-align: center;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+.empty-cart-page .wrapper h1 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.empty-cart-page .wrapper p {
+  font-size: 18px;
+  margin-bottom: 20px;
+}
+
+.back-to-home {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #333;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 5px;
+  font-size: 16px;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.back-to-home:hover {
+  background-color: #474545;
+}

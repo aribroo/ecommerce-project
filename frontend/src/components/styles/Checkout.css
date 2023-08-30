@@ -1,0 +1,91 @@
+.checkout-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  padding: 50px 0;
+  background-color: #f7f7f7;
+}
+
+.checkout-page .wrapper {
+  width: 100%;
+  max-width: 800px;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.checkout-page .wrapper h1 {
+  font-size: 32px;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.checkout-page .wrapper h2 {
+  font-size: 24px;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+.checkout-page .wrapper .form-group {
+  display: flex;
+  gap: 10px;
+  justify-content: space-between;
+  margin-bottom: 15px;
+}
+
+.checkout-page input,
+textarea {
+  width: -webkit-fill-available;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+.checkout-page textarea {
+  resize: none;
+  margin-bottom: 20px;
+}
+
+.radio-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 10px 0 20px 0;
+}
+
+.payment-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.payment-icon {
+  width: 40px;
+}
+
+/* Style radio button */
+.payment-option input[type='radio'] {
+  position: absolute; /* Agar radio button tetap diatur */
+  right: 400px;
+}
+
+.checkout-form .checkout-button {
+  background-color: #f4511e;
+  color: rgb(255, 255, 255);
+  font-weight: 500;
+  border: none;
+  padding: 10px 20px;
+  text-decoration: none;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.checkout-form .checkout-button:hover {
+  background-color: #ec4613; /* Ubah warna latar belakang saat dihover */
+  text-shadow: none; /* Hapus bayangan teks saat dihover */
+}

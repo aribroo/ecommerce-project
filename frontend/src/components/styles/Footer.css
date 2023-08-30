@@ -1,0 +1,55 @@
+.footer {
+  background-color: #333;
+  font-family: 'Poppins', sans-serif;
+  color: #fff;
+  padding: 5px 0;
+  text-align: center;
+}
+
+.footer-text {
+  margin-bottom: 10px;
+  font-size: 16px;
+  cursor: default;
+}
+
+.love-icon {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  background-image: url('../../assets/icons/love.svg');
+  background-size: cover;
+  vertical-align: middle;
+  margin: 0 5px;
+}
+
+.social-links {
+  cursor: default;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.gmail-icon,
+.instagram-icon {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  margin: 0 10px;
+  background-size: cover;
+  transition: filter 0.3s ease-in-out;
+}
+
+.gmail-icon {
+  background-image: url('../../assets/icons/gmail.svg');
+}
+
+.instagram-icon {
+  background-image: url('../../assets/icons/instagram.svg');
+}
+
+/* Ganti warna ikon ketika dihover */
+.gmail-icon:hover,
+.instagram-icon:hover {
+  filter: brightness(1.2);
+}

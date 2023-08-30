@@ -1,0 +1,160 @@
+/* ProductDetail.css */
+
+.product-detail {
+  min-height: 1000px;
+  padding: 20px;
+  border: 1px solid #ccc;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .wrapper {
+    display: flex;
+    gap: 100px;
+    align-items: flex-start;
+    margin-top: 20px;
+    .product-image {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .product-image img {
+      max-width: 500px;
+      height: auto;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease-in-out;
+    }
+
+    .product-info {
+      flex: 1;
+      width: 500px;
+      display: flex;
+      flex-direction: column;
+      margin-left: 40px;
+
+      .product-title {
+        font-size: 24px;
+        margin: 0 0 10px 0;
+        color: #333;
+      }
+
+      .product-price {
+        font-size: 18px;
+        color: #e74c3c;
+        margin: 0;
+      }
+
+      .product-category {
+        font-size: 16px;
+        color: #3498db;
+        font-weight: 500;
+        margin: 5px 0;
+      }
+
+      .product-quantity {
+        font-weight: 500;
+        font-size: 16px;
+        margin: 5px 0;
+      }
+
+      .product-description-short {
+        font-size: 16px;
+        font-weight: 500;
+        margin: 10px 0;
+      }
+
+      .quantity-control {
+        margin-top: 50px;
+        width: 150px;
+        display: flex;
+        align-items: center;
+      }
+
+      .quantity-button {
+        background-color: #f1f1f1;
+        color: #333;
+        border: none;
+        padding: 8px 15px;
+        font-size: 16px;
+        cursor: pointer;
+        border-radius: 5px;
+        transition: background-color 0.3s ease-in-out;
+        outline: none;
+      }
+
+      .quantity-button:hover {
+        background-color: #e0e0e0;
+      }
+
+      .quantity-input {
+        width: 40px;
+        text-align: center;
+        flex: 2;
+        border: none;
+        font-size: 16px;
+        padding: 8px;
+        margin: 0 10px;
+        outline: none;
+      }
+
+      /* Styling tambahan untuk tampilan yang lebih menarik */
+      .quantity-control .quantity-button {
+        text-align: center;
+        flex: 1;
+      }
+    }
+
+    .add-to-cart-button {
+      background-color: #ff5722;
+      color: #fff;
+      padding: 12px;
+      font-size: 18px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      width: 200px;
+      margin-top: 20px;
+      transition: background-color 0.3s ease-in-out;
+    }
+
+    .add-to-cart-button:hover {
+      background-color: #f4511e;
+    }
+  }
+
+  .full-description {
+    margin-top: 100px;
+    width: 1150px;
+    padding: 20px;
+    background-color: #f8f8f8;
+    border-radius: 4px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .full-description h2 {
+    font-size: 24px;
+    margin: 0 0 40px 0;
+    color: #333;
+    position: relative; /* Menambahkan posisi relatif */
+  }
+  .full-description h2::after {
+    content: '';
+    position: absolute;
+    bottom: -5px; /* Menyesuaikan posisi border bottom */
+    left: -3px;
+    width: 200px; /* Lebar border bottom */
+    border-radius: 20px;
+    height: 4px; /* Ketebalan border bottom */
+    background-color: #333;
+  }
+
+  .full-description p {
+    font-size: 16px;
+    line-height: 1.5;
+    color: #666;
+  }
+}

@@ -1,0 +1,33 @@
+.not-found-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background-color: #f7f7f7;
+}
+
+.not-found-page .wrapper {
+  text-align: center;
+}
+
+.not-found-page h1 {
+  font-size: 36px;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.not-found-page p {
+  font-size: 18px;
+  margin-bottom: 20px;
+  color: #666;
+}
+
+.not-found-page a {
+  color: #333;
+  text-decoration: none;
+  transition: color 0.3s ease-in-out;
+}
+
+.not-found-page a:hover {
+  color: #e74c3c;
+}

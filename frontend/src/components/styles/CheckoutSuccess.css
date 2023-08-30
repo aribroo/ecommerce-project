@@ -1,0 +1,35 @@
+.checkout-confirmation {
+  min-height: 100vh;
+  text-align: center;
+  margin-top: 50px;
+  padding: 20px;
+  background-color: #f7f7f7;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.checkout-confirmation h2 {
+  font-size: 24px;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.checkout-confirmation p {
+  font-size: 18px;
+  color: #666;
+  margin-bottom: 10px;
+}
+
+.checkout-confirmation div {
+  font-size: 16px;
+  color: #333;
+  margin-top: 5px;
+}
+
+/* Optional: Add styling to make the transaction details stand out more */
+.checkout-confirmation div {
+  padding: 10px;
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
