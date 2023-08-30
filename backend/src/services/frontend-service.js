@@ -134,9 +134,8 @@ const getCart = async (query) => {
 
 const deleteCart = async (id) => {
   id = validate(addToCartValidation, id);
-
   const cart = await db.cart.destroy({ where: { id } });
-  console.log(cart);
+
   if (cart === 0) throw new ResponseError(404, 'Id cart not found');
 };
 
