@@ -1,5 +1,32 @@
 const baseUrl = 'http://localhost:3000/frontend';
 
+export const register = async (request) => {
+  const response = await fetch('http://localhost:3000/api/user/register', {
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(request)
+  });
+
+  const result = await response.json();
+  return result;
+};
+
+export const login = async (request) => {
+  const response = await fetch('http://localhost:3000/api/user/login', {
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(request),
+    credentials: 'include'
+  });
+
+  const result = await response.json();
+  return result;
+};
+
 export const getProductHome = async () => {
   const response = await fetch(baseUrl);
   const result = await response.json();
@@ -8,52 +35,63 @@ export const getProductHome = async () => {
 };
 
 export const getAllProducts = async () => {
-  const response = await fetch(`${baseUrl}/product`);
+  const response = await fetch(`${baseUrl}/products`);
   const result = await response.json();
 
-  return result.data;
+  return result;
 };
 
 export const getProductDetail = async (url) => {
-  const response = await fetch(`${baseUrl}/product/detail/${url}`);
+  const response = await fetch(`${baseUrl}/product/${url}`);
   const result = await response.json();
 
   return result.data;
 };
 
 export const searchProducts = async (keyword) => {
-  const response = await fetch(`${baseUrl}/product/?keyword=${keyword}`);
+  const response = await fetch(`${baseUrl}/products/?keyword=${keyword}`);
   const result = await response.json();
 
-  return result.data;
+  return result;
 };
 
-export const addToCart = async (productId) => {
+export const addToCart = async (token, userId, productId) => {
   const requestData = {
     product_id: productId,
     qty: 1,
-    session_id: 12345
+    user_id: userId
   };
 
-  await fetch(`${baseUrl}/cart`, {
+  const response = await fetch(`${baseUrl}/cart`, {
     method: 'post',
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`
     },
     body: JSON.stringify(requestData)
   });
-};
 
-export const getCart = async (sessionId) => {
-  const response = await fetch(`${baseUrl}/cart/?session_id=${sessionId}`);
   const result = await response.json();
-
-  return result.data;
+  return result;
 };
 
-export const removeCartItem = async (id) => {
+export const getCart = async (token) => {
+  const response = await fetch(`${baseUrl}/cart`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+
+  const result = await response.json();
+  return result;
+};
+
+export const removeCartItem = async (id, token) => {
   const response = await fetch(`${baseUrl}/cart/${id}`, {
-    method: 'delete'
+    method: 'delete',
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
   });
   const result = await response.json();
 
@@ -76,15 +114,33 @@ export const updateCarts = async (id, qty) => {
   return result;
 };
 
-export const orderNow = async (request, sessionId) => {
-  const response = await fetch(`${baseUrl}/checkout/?session_id=${sessionId}`, {
+export const checkout = async (token) => {
+  const response = await fetch(`${baseUrl}/checkout`, {
     method: 'post',
     headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(request)
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`
+    }
   });
 
   const result = await response.json();
+  return result;
+};
+
+export const getTransactionHistories = async (token) => {
+  const response = await fetch('http://localhost:3000/transactions', {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+  const result = await response.json();
+
+  return result;
+};
+
+export const getTransactionDetail = async (transactionId) => {
+  const response = await fetch(`http://localhost:3000/transaction/${transactionId}`);
+  const result = await response.json();
+
   return result.data;
 };

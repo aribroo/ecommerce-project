@@ -6,11 +6,21 @@ import '../components/styles/LandingPage.css';
 import shippingIcon from '../assets/icons/shipping.svg';
 import refundIcon from '../assets/icons/refund.svg';
 import supportIcon from '../assets/icons/support.svg';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { getCart } from '../api/product-api';
 
-export default function Homepage() {
+// eslint-disable-next-line react/prop-types
+const Homepage = ({ countCartItems }) => {
   const navigate = useNavigate();
   const [keyword, setKeyword] = useState('');
+
+  useEffect(() => {
+    const token = localStorage.getItem('access_token');
+    if (token) {
+      getCart(token).then((result) => countCartItems(result.data));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const searchButton = (q) => {
     navigate(`/product/?keyword=${q}`);
@@ -74,4 +84,6 @@ export default function Homepage() {
       </div>
     </>
   );
-}
+};
+
+export default Homepage;

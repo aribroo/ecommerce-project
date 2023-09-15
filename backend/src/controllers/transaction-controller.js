@@ -2,7 +2,8 @@ import transactionService from '../services/transaction-service.js';
 
 const getAllTransaction = async (req, res, next) => {
   try {
-    const result = await transactionService.getAllTransaction();
+    const userId = req.user.id;
+    const result = await transactionService.getAllTransaction(userId);
 
     res.status(200).json({ data: result });
   } catch (e) {

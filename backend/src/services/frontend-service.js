@@ -1,19 +1,20 @@
-import { addToCartValidation, getProductValidation, searchProductValidation } from '../validation/product-schema.js';
+import { addToCartValidation, checkoutValidation, getProductValidation, searchProductValidation } from '../validation/product-schema.js';
 import { ResponseError } from '../error/response-error.js';
 import { validate } from '../validation/validation.js';
 import db from '../models/bundle-model.js';
 import { v4 as uuidv4 } from 'uuid';
-import { customerValidation } from '../validation/customer-schema.js';
 
 import { dirname, join } from 'path';
 import { fileURLToPath } from 'url';
+import { Op } from 'sequelize';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 const getProductHomepage = async () => {
   return db.product.findAll({
-    attributes: ['id', 'title', 'price', 'image', 'url'],
+    attributes: ['id', 'title', 'stock', 'price', 'image', 'url'],
+    where: { stock: { [Op.gt]: 0 } },
     limit: 8
   });
 };
@@ -23,7 +24,7 @@ const productDetail = async (url) => {
 
   const product = await db.product.findOne({
     where: { url },
-    attributes: ['id', 'title', 'price', 'desc', 'full_desc', 'image', 'url'],
+    attributes: ['id', 'title', 'price', 'stock', 'desc', 'full_desc', 'image', 'url'],
 
     include: {
       model: db.category,
@@ -40,7 +41,7 @@ const searchProducts = async (query) => {
   if (Object.keys(query).length > 0 && !query.keyword) throw new ResponseError(400, 'Bad request query');
 
   const queryOptions = {
-    attributes: ['id', 'title', 'price', 'desc', 'full_desc', 'image', 'url', 'category_id']
+    attributes: ['id', 'title', 'price', 'stock', 'desc', 'full_desc', 'image', 'url', 'category_id']
   };
 
   if (query.keyword) {
@@ -48,15 +49,24 @@ const searchProducts = async (query) => {
 
     const products = await db.product.findAll({
       where: {
-        [db.Sequelize.Op.or]: [
+        [Op.and]: [
           {
-            title: {
-              [db.Sequelize.Op.like]: `%${keyword}%`
-            }
+            [Op.or]: [
+              {
+                title: {
+                  [Op.like]: `%${keyword}%`
+                }
+              },
+              {
+                '$category.name$': {
+                  [Op.like]: `%${keyword}%`
+                }
+              }
+            ]
           },
           {
-            '$category.name$': {
-              [db.Sequelize.Op.like]: `%${keyword}%`
+            stock: {
+              [Op.gt]: 0
             }
           }
         ]
@@ -73,31 +83,31 @@ const searchProducts = async (query) => {
 
     return products;
   } else {
-    return db.product.findAll(queryOptions);
+    return db.product.findAll(queryOptions, { where: { stock: { [Op.gt]: 0 } } });
   }
 };
 
-const addToCart = async (request) => {
+const addToCart = async (userId, request) => {
   const product_id = validate(getProductValidation, request.product_id);
-  const session_id = validate(addToCartValidation, request.session_id);
+  userId = validate(addToCartValidation, userId);
   const qty = validate(addToCartValidation, request.qty);
 
-  const checkCart = await db.cart.findOne({ where: { session_id, product_id } });
+  const checkCart = await db.cart.findOne({ where: { user_id: userId, product_id } });
 
   if (checkCart) {
     await db.cart.update(
       {
         qty: db.sequelize.literal('qty + 1')
       },
-      { where: { session_id, product_id } }
+      { where: { user_id: userId, product_id } }
     );
 
-    return db.cart.findOne({ where: { session_id, product_id } });
+    return db.cart.findOne({ where: { user_id: userId, product_id } });
   }
 
   return db.cart.create({
+    user_id: userId,
     qty,
-    session_id,
     product_id
   });
 };
@@ -113,12 +123,12 @@ const updateCart = async (id, request) => {
   return db.cart.findOne({ where: { id } });
 };
 
-const getCart = async (query) => {
-  const session_id = validate(addToCartValidation, query.session_id);
+const getCart = async (userId) => {
+  userId = validate(addToCartValidation, userId);
 
   const cart = await db.cart.findAll({
-    attributes: ['id', 'qty', 'session_id'],
-    where: { session_id },
+    attributes: ['id', 'qty'],
+    where: { user_id: userId },
     include: [
       {
         model: db.product,
@@ -139,25 +149,35 @@ const deleteCart = async (id) => {
   if (cart === 0) throw new ResponseError(404, 'Id cart not found');
 };
 
-const checkout = async (query, request) => {
-  const session_id = validate(addToCartValidation, query.session_id);
-  request = validate(customerValidation, request);
+const checkout = async (user) => {
+  const carts = await db.cart.findAll({
+    where: { user_id: user.id },
+    include: [
+      {
+        model: db.product,
+        attributes: ['price']
+      }
+    ]
+  });
 
-  const cart = await db.cart.findAll({ where: { session_id } });
-
-  if (cart.length === 0) {
+  if (carts.length === 0) {
     throw new ResponseError(404, 'Cart is not found');
   }
 
+  const amount = carts.reduce((total, cart) => {
+    return total + cart.product.price * cart.qty;
+  }, 0);
+
   const transactionData = {
     id: uuidv4(),
-    trs_number: 'trs-' + Date.now()
+    trs_number: 'trs-' + Date.now(),
+    amount: parseInt(amount),
+    user_id: user.id
   };
 
-  const transactionItems = cart.map((item) => ({
-    qty: item.qty,
-    session_id: item.session_id,
-    product_id: item.product_id,
+  const transactionItems = carts.map((cart) => ({
+    qty: cart.qty,
+    product_id: cart.product_id,
     trs_id: transactionData.id
   }));
 
@@ -166,19 +186,7 @@ const checkout = async (query, request) => {
   await db.transaction_detail.bulkCreate(transactionItems);
 
   // delete cart items after successful transaction
-  await db.cart.destroy({ where: { session_id } });
-
-  const customerData = {
-    first_name: request.first_name,
-    last_name: request.last_name,
-    email: request.email,
-    address: request.address,
-    number_phone: request.number_phone,
-    trs_id: transactionData.id
-  };
-
-  // create customer data
-  await db.customer.create(customerData);
+  await db.cart.destroy({ where: { user_id: user.id } });
 
   return transactionData;
 };

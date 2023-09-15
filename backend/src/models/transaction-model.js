@@ -5,7 +5,12 @@ const TransactionModel = (sequelize, DataTypes) => {
       primaryKey: true
     },
     trs_number: {
-      type: DataTypes.STRING
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    amount: {
+      type: DataTypes.INTEGER,
+      allowNull: false
     }
   });
   return Transaction;

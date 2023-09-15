@@ -1,0 +1,58 @@
+.transaction-history {
+  max-width: 1200px;
+  margin: 0 auto;
+  min-height: 100vh;
+}
+
+.transaction-history h1 {
+  text-align: center;
+  color: #333;
+  padding: 20px;
+  font-weight: bold;
+  font-size: 36px;
+}
+
+.transaction-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.transaction-table th,
+.transaction-table td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: center;
+}
+
+.transaction-table th {
+  background-color: #f2f2f2;
+}
+
+.product-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.product-title-container {
+  margin-bottom: 5px;
+}
+
+.product-title {
+  font-weight: bold;
+}
+
+.view-detail-button {
+  background-color: #333;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 30px;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.view-detail-button:hover {
+  background-color: #2b2a2a;
+}

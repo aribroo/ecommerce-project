@@ -3,9 +3,10 @@ import { validate } from '../validation/validation.js';
 import db from '../models/bundle-model.js';
 import { getProductValidation } from '../validation/product-schema.js';
 
-const getAllTransaction = async () => {
-  const historyTransaction = await db.transaction.findAll({
-    attributes: ['id', 'trs_number'],
+const getAllTransaction = async (userId) => {
+  const transactions = await db.transaction.findAll({
+    where: { user_id: userId },
+    attributes: ['id', 'trs_number', 'amount', 'createdAt'],
     include: [
       {
         attributes: ['id', 'qty'],
@@ -26,33 +27,20 @@ const getAllTransaction = async () => {
     ]
   });
 
-  if (historyTransaction.length === 0) throw new ResponseError(404, 'Transaction is empty');
+  if (transactions.length === 0) throw new ResponseError(404, 'Transaction is empty');
 
-  const groupedData = historyTransaction.reduce((result, currentItem) => {
-    const existingItem = result.find((item) => item.transaction_id === currentItem.id);
+  const groupedData = transactions.map((transaction) => {
+    const products = transaction.transaction_details.map((detail) => {
+      return detail.product.title;
+    });
 
-    if (existingItem) {
-      existingItem.items.push({
-        id: currentItem.transaction_detail.id,
-        qty: currentItem.transaction_detail.qty,
-        product: currentItem.transaction_detail.product
-      });
-    } else {
-      result.push({
-        transaction_id: currentItem.id,
-        trs_number: currentItem.trs_number,
-        items: [
-          {
-            id: currentItem.transaction_detail.id,
-            qty: currentItem.transaction_detail.qty,
-            product: currentItem.transaction_detail.product
-          }
-        ]
-      });
-    }
-
-    return result;
-  }, []);
+    return {
+      transaction_id: transaction.id,
+      amount: transaction.amount,
+      date: transaction.createdAt,
+      products
+    };
+  });
 
   return groupedData;
 };
@@ -60,9 +48,9 @@ const getAllTransaction = async () => {
 const getOneTransaction = async (id) => {
   id = validate(getProductValidation, id);
 
-  const historyTransaction = await db.transaction.findAll({
+  const transaction = await db.transaction.findOne({
     where: { id },
-    attributes: ['id', 'trs_number'],
+    attributes: ['id', 'trs_number', 'amount'],
     include: [
       {
         attributes: ['id', 'qty'],
@@ -83,35 +71,28 @@ const getOneTransaction = async (id) => {
     ]
   });
 
-  if (historyTransaction.length === 0) throw new ResponseError(404, 'Transaction is not found');
+  if (!transaction) throw new ResponseError(404, 'Transaction is not found');
 
-  const groupedData = historyTransaction.reduce((result, currentItem) => {
-    const existingItem = result.find((item) => item.transaction_id === currentItem.id);
+  const products = transaction.transaction_details.map((detail) => {
+    return {
+      id: detail.id,
+      qty: detail.qty,
+      title: detail.product.title,
+      price: detail.product.price,
+      image: detail.product.image,
+      category: detail.product.category.name,
+      desc: detail.product.desc,
+      full_desc: detail.product.full_desc
+    };
+  });
 
-    if (existingItem) {
-      existingItem.items.push({
-        id: currentItem.transaction_detail.id,
-        qty: currentItem.transaction_detail.qty,
-        product: currentItem.transaction_detail.product
-      });
-    } else {
-      result.push({
-        transaction_id: currentItem.id,
-        trs_number: currentItem.trs_number,
-        items: [
-          {
-            id: currentItem.transaction_detail.id,
-            qty: currentItem.transaction_detail.qty,
-            product: currentItem.transaction_detail.product
-          }
-        ]
-      });
-    }
-
-    return result;
-  }, []);
-
-  return groupedData;
+  return {
+    trs_id: transaction.id,
+    trs_number: transaction.trs_number,
+    amount: transaction.amount,
+    date: transaction.createdAt,
+    products
+  };
 };
 
 export default { getAllTransaction, getOneTransaction };

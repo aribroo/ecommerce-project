@@ -1,7 +1,7 @@
 export default {
   base_url: 'http://localhost:3000',
   host: 'localhost',
-  user: '',
+  user: 'root',
   password: '',
   dbname: 'shopmania_db',
   dialect: 'mysql',

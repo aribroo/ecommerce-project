@@ -1,8 +1,8 @@
 import { NavLink } from 'react-router-dom';
-import PropTypes from 'prop-types';
 import '../components/styles/NavigationBar.css';
 import { FaShoppingCart } from 'react-icons/fa';
 
+// eslint-disable-next-line react/prop-types
 const NavigationBar = ({ totalCartItems }) => {
   return (
     <div className="navbar">
@@ -24,12 +24,13 @@ const NavigationBar = ({ totalCartItems }) => {
           <NavLink to="/contact">Contact</NavLink>
         </li>
         <li>
-          <NavLink to="/transaction">Transaction</NavLink>
+          <NavLink to="/transactions">Transaction</NavLink>
         </li>
       </ul>
       <div className="icons">
         <NavLink to="/cart" className="cart-icon">
           <FaShoppingCart />
+          {/* eslint-disable-next-line react/prop-types */}
           <p className="cart-product-count">{totalCartItems ? totalCartItems.length : 0}</p>
         </NavLink>
         <NavLink to="/profile" className="profile-icon">
@@ -38,10 +39,6 @@ const NavigationBar = ({ totalCartItems }) => {
       </div>
     </div>
   );
-};
-
-NavigationBar.propTypes = {
-  totalCartItems: PropTypes.array.isRequired
 };
 
 export default NavigationBar;

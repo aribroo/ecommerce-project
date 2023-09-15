@@ -6,6 +6,7 @@ import { getProductDetail, addToCart, getCart } from '../api/product-api';
 import api from '../api/api';
 
 import '../components/styles/ProductDetail.css';
+import jwt_decode from 'jwt-decode';
 
 const DetailProduct = ({ countCartItems }) => {
   const { url } = useParams();
@@ -51,10 +52,19 @@ const DetailProduct = ({ countCartItems }) => {
   }).format(product.price);
 
   const handleCart = (productId) => {
-    setShowModal(showModal + 1);
+    const token = localStorage.getItem('access_token');
+    if (!token) return navigate('/login');
 
-    addToCart(productId).then(() => {
-      getCart(12345).then((result) => countCartItems(result));
+    const decoded = jwt_decode(token);
+    const userId = decoded.userId;
+
+    addToCart(token, userId, productId).then(() => {
+      getCart(token).then((result) => {
+        if (result.errors === 'Unauthorize' || result.errors === 'Forbidden') return navigate('/login');
+
+        setShowModal(showModal + 1);
+        countCartItems(result.data);
+      });
     });
   };
 

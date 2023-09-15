@@ -13,6 +13,7 @@ const createProduct = async (file, request) => {
     id: uuidv4(),
     title: request.title,
     price: request.price,
+    stock: request.stock,
     desc: request.desc,
     full_desc: request.full_desc,
     image: file.filename,
@@ -25,7 +26,7 @@ const createProduct = async (file, request) => {
 
 const getAllProducts = async (query) => {
   const queryOptions = {
-    attributes: ['id', 'title', 'price', 'desc', 'full_desc', 'image', 'url', 'category_id']
+    attributes: ['id', 'title', 'price', 'stock', 'desc', 'full_desc', 'image', 'url', 'category_id']
   };
 
   if (Object.keys(query).length !== 0 && !query.title) throw new ResponseError(400, 'Bad request query');
@@ -55,7 +56,7 @@ const getOneProduct = async (id) => {
 
   const product = await db.product.findOne({
     where: { id },
-    attributes: ['id', 'title', 'price', 'desc', 'full_desc', 'image', 'url', 'category_id']
+    attributes: ['id', 'title', 'price', 'stock', 'desc', 'full_desc', 'image', 'url', 'category_id']
   });
 
   if (!product) throw new ResponseError(404, 'Product is not found');
@@ -69,12 +70,10 @@ const updateProduct = async (id, file, request) => {
 
   const randomDigits = Math.floor(10000000 + Math.random() * 90000000);
 
-  console.log('id = ', id);
-  console.log('request = ', request);
-
   const data = {
     title: request.title,
     price: request.price,
+    stock: request.stock,
     desc: request.desc,
     full_desc: request.full_desc,
     image: file.filename,
@@ -90,7 +89,7 @@ const updateProduct = async (id, file, request) => {
 
   return db.product.findOne({
     where: { id },
-    attributes: ['id', 'title', 'price', 'desc', 'full_desc', 'image', 'url', 'category_id']
+    attributes: ['id', 'title', 'price', 'stock', 'desc', 'full_desc', 'image', 'url', 'category_id']
   });
 };
 

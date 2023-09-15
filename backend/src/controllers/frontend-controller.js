@@ -34,7 +34,8 @@ const searchProducts = async (req, res, next) => {
 const addToCart = async (req, res, next) => {
   try {
     const request = req.body;
-    const result = await frontendService.addToCart(request);
+    const userId = req.user.id;
+    const result = await frontendService.addToCart(userId, request);
 
     res.status(200).json({ data: result });
   } catch (e) {
@@ -56,8 +57,8 @@ const updateCart = async (req, res, next) => {
 
 const getCart = async (req, res, next) => {
   try {
-    const query = req.query;
-    const result = await frontendService.getCart(query);
+    const userId = req.user.id;
+    const result = await frontendService.getCart(userId);
 
     res.status(200).json({ data: result });
   } catch (e) {
@@ -78,9 +79,7 @@ const deleteCart = async (req, res, next) => {
 
 const checkout = async (req, res, next) => {
   try {
-    const query = req.query;
-    const request = req.body;
-    const result = await frontendService.checkout(query, request);
+    const result = await frontendService.checkout(req.user);
 
     res.status(200).json({ data: result });
   } catch (e) {

@@ -5,23 +5,30 @@ import { useEffect, useState } from 'react';
 import NavigationBar from '../components/NavigationBar';
 import Footer from '../components/Footer';
 
-import Homepage from '../pages/homepage';
+import Register from '../pages/Register';
+import Login from '../pages/Login';
+import Profile from '../pages/Profile';
+import Homepage from '../pages/Homepage';
 import About from '../pages/About';
 import Product from '../pages/Product';
 import ProductDetail from '../pages/ProductDetail';
 import Contact from '../pages/Contact';
-import Transaction from '../pages/Transaction';
+import TransactionHistory from '../pages/TransactionHistory';
+import TransactionDetail from '../pages/TransactionDetail';
 import Checkout from '../pages/Checkout';
-import Cart from '../pages/cart';
-import CheckoutSuccess from '../pages/ChekoutSuccess';
+import Cart from '../pages/Cart';
+import CheckoutResult from '../pages/CheckoutResult';
 import NotFound from '../pages/NotFound';
 
 const App = () => {
   const [countCartItems, setCountCartItems] = useState([]);
+  const [token, setToken] = useState('');
 
   useEffect(() => {
-    getCart(12345).then((result) => setCountCartItems(result));
-  }, []);
+    const token = localStorage.getItem('access_token');
+    setToken(token);
+    getCart(token).then((result) => setCountCartItems(result.data));
+  }, [token]);
 
   const handleCountCartItems = (cartItems) => {
     setCountCartItems(cartItems);
@@ -31,15 +38,19 @@ const App = () => {
     <Router>
       <NavigationBar totalCartItems={countCartItems} />
       <Routes>
-        <Route exact path="/" element={<Homepage />} />
+        <Route exact path="/" element={<Homepage countCartItems={handleCountCartItems} />} />
         <Route path="/product" element={<Product countCartItems={handleCountCartItems} />} />
         <Route path="/product/:url" element={<ProductDetail countCartItems={handleCountCartItems} />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/about" element={<About />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/profile" element={<Profile countCartItems={handleCountCartItems} />} />
         <Route path="/cart" element={<Cart countCartItems={handleCountCartItems} />} />
-        <Route path="/transaction" element={<Transaction />} />
-        <Route path="/checkout" element={<Checkout />} />
-        <Route path="/checkout/success" element={<CheckoutSuccess />} />
+        <Route path="/transactions" element={<TransactionHistory />} />
+        <Route path="/transaction/:id" element={<TransactionDetail />} />
+        <Route path="/checkout" element={<Checkout countCartItems={handleCountCartItems} />} />
+        <Route path="/checkout/:transactionId" element={<CheckoutResult />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
       <Footer />
