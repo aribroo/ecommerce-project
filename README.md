@@ -13,7 +13,7 @@ Welcome to My Ecommerce Website repository! This project is a full-stack ecommer
 ## Tech Stack
 
 - **Backend**: Node.js, Express.js, Sequelize (ORM), MySQL
-- **Frontend**: React, Redux (State Management), Axios (HTTP Client)
+- **Frontend**: React
 
 ## Folder Structure
 
@@ -60,6 +60,6 @@ git push origin feature-name
 
 ## Issues and Feedback
 
-If you encounter any issues or have suggestions for improvements, please [open an issue](https://github.com/username/my-ecommerce-app/issues) or [submit a pull request](https://github.com/username/my-ecommerce-app/pulls). Your feedback is highly appreciated!
+If you encounter any issues or have suggestions for improvements, please [open an issue](https://github.com/aribroo/ecommerce-project/issues) or [submit a pull request](https://github.com/aribroo/ecommerce-project/pulls). Your feedback is highly appreciated!
 
 Happy coding!
